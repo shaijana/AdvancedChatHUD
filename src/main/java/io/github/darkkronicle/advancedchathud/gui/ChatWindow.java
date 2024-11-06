@@ -483,10 +483,10 @@ public class ChatWindow {
                     X_ICON,
                     rightX - scaledBar + 1,
                     getActualY(newY - 1),
-                    scaledBar - 2,
-                    scaledBar - 2,
                     0,
                     0,
+                    scaledBar - 2,
+                    scaledBar - 2,
                     32,
                     32,
                     32,
@@ -500,10 +500,10 @@ public class ChatWindow {
                     RESIZE_ICON,
                     rightX - scaledBar * 2 + 2,
                     getActualY(newY - 1),
-                    scaledBar - 2,
-                    scaledBar - 2,
                     0,
                     0,
+                    scaledBar - 2,
+                    scaledBar - 2,
                     32,
                     32,
                     32,
@@ -516,10 +516,10 @@ public class ChatWindow {
                     visibility.getTexture(),
                     rightX - scaledBar * 3 + 3,
                     getActualY(newY - 1),
-                    scaledBar - 2,
-                    scaledBar - 2,
                     0,
                     0,
+                    scaledBar - 2,
+                    scaledBar - 2,
                     32,
                     32,
                     32,
@@ -682,7 +682,7 @@ public class ChatWindow {
                     line.getParent().getOwner().getTexture(), headX, headY, 8, 8, 8, 8, 8, 8, 64, 64);
             context.drawTexture(
                     RenderLayer::getGuiTextured,
-                    line.getParent().getOwner().getTexture(), headX, headY, 8, 8, 40, 8, 8, 8, 64, 64);
+                    line.getParent().getOwner().getTexture(), headX, headY,40, 8, 8, 8,  8, 8, 64, 64);
             RenderSystem.setShaderColor(1, 1, 1, 1);
         }
         context.drawTextWithShadow(
