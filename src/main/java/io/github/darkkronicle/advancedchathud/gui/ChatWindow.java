@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import io.github.darkkronicle.advancedchathud.util.ScissorUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.fabricmc.api.EnvType;
@@ -33,7 +32,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -208,8 +206,7 @@ public class ChatWindow {
         }
     }
 
-    public static void drawRect(
-            DrawContext context, int x, int y, int width, int height, int color) {
+    public static void drawRect(DrawContext context, int x, int y, int width, int height, int color) {
         context.fill(x, y, x + width, y + height, color);
     }
 
@@ -342,13 +339,8 @@ public class ChatWindow {
                         renderTopFirst ? HudConfigStorage.General.TOP_PAD.config.getIntegerValue() + HudConfigStorage.General.LINE_SPACE.config.getIntegerValue(): HudConfigStorage.General.BOTTOM_PAD.config.getIntegerValue());
 
         double scale = client.getWindow().getScaleFactor();
-        ScissorUtil.applyScissorBox(
-                (int) (getConvertedX() * scale),
-                (int) ((client.getWindow().getScaledHeight() - getConvertedY()) * scale),
-                (int) (getConvertedWidth() * scale),
-                (int) (getConvertedHeight() * scale));
         boolean foundScroll = false;
-        for (int j = 0; j < this.lines.size(); j++) {
+        for (int j = 0; j < this.lines.size(); j++) { //Render text
             ChatMessage message = this.lines.get(j);
             // To get the proper index of reversed
             for (int i = message.getLineCount() - 1; i >= 0; i--) {
@@ -395,7 +387,6 @@ public class ChatWindow {
             }
             currentHeight += HudConfigStorage.General.MESSAGE_SPACE.config.getIntegerValue();
         }
-        ScissorUtil.resetScissor();
         if (renderedLines == 0) {
             y.setValue(0);
         }
@@ -406,7 +397,7 @@ public class ChatWindow {
             }
         }
 
-        if (focused && !isMinimalist()) {
+        if (focused && !isMinimalist()) { //Render Outline and box above chatbox
             drawOutline(
                     context,
                     leftX,
@@ -537,7 +528,7 @@ public class ChatWindow {
             }
         }
 
-        if (chatFocused) {
+        if (chatFocused) { //Render background of chat box
             if (y.getValue() < getScaledHeight()) {
                 // Check to see if we've already gone above the boundaries
                 fill(
@@ -604,19 +595,8 @@ public class ChatWindow {
             int fadeStart = HudConfigStorage.General.FADE_START.config.getIntegerValue();
             int fadeStop = fadeStart + HudConfigStorage.General.FADE_TIME.config.getIntegerValue();
             int timeAlive = ticks - line.getParent().getCreationTick();
-            float percent =
-                    (float)
-                            Math.min(
-                                    1,
-                                    (double) (timeAlive - fadeStart)
-                                            / (double) (fadeStop - fadeStart));
-            applied =
-                    1
-                            - (float)
-                                    ((EasingMethod)
-                                                    HudConfigStorage.General.FADE_TYPE.config
-                                                            .getOptionListValue())
-                                            .apply(percent);
+            float percent = (float) Math.min(1, (double) (timeAlive - fadeStart) / (double) (fadeStop - fadeStart));
+            applied = 1 - (float) ((EasingMethod) HudConfigStorage.General.FADE_TYPE.config.getOptionListValue()).apply(percent);
             applied = Math.max(0, applied);
             if (applied <= 0) {
                 return;
